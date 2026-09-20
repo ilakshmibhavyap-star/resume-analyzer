@@ -3,11 +3,37 @@ services:
     name: resume-analyzer
     runtime: python
     plan: free
+
     buildCommand: pip install -r requirements.txt
+
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
     healthCheckPath: /api/health
+
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+
+      - key: GEN_MODEL
+        value: gemini-3.6-flash
+
+      - key: EMBED_MODEL
+        value: gemini-embedding-001
+
+      - key: EMBED_DIM
+        value: "768"
+
+      - key: CHUNK_SIZE
+        value: "700"
+
+      - key: CHUNK_OVERLAP
+        value: "120"
+
+      - key: TOP_K
+        value: "6"
+
+      - key: MAX_RETRIES
+        value: "3"
+
       - key: GEMINI_API_KEY
         sync: false
