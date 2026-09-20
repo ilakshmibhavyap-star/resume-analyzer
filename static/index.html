@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Analyzer</title>
+  <meta name="description" content="Upload a PDF resume and ask questions about the candidate. Answers come only from the resume.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- LEFT: the resume -->
+    <section class="pane desk" aria-label="Resume">
+      <header class="brand">
+        <h1>Resume Analyzer</h1>
+        <p>Upload a resume, then ask about the candidate. Answers come only from what the resume says.</p>
+      </header>
+
+      <div id="banner" class="banner" role="alert" hidden></div>
+
+      <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose a resume PDF">
+        <strong>Add a resume</strong>
+        <span>Drop a PDF here, or click to choose one.</span>
+        <small>Text-based PDFs up to 5 MB. Scanned images can't be read.</small>
+        <p id="drop-error" class="drop-error" role="alert" hidden></p>
+        <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
+      </div>
+
+      <div id="loading" class="loading" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Reading the PDF, splitting it into chunks and building the search index&hellip;</span>
+      </div>
+
+      <div id="doc" class="doc" hidden>
+        <div class="doc-head">
+          <h2 id="file-name">resume.pdf</h2>
+          <button id="replace" class="btn-quiet" type="button">Replace resume</button>
+        </div>
+        <p id="summary" class="summary"></p>
+        <div class="sheet-wrap">
+          <ol id="chunks" class="sheet" aria-label="Resume split into chunks"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: the conversation -->
+    <section class="pane chat" aria-label="Questions and answers">
+      <div class="role">
+        <label for="role">Job role <span>(optional)</span></label>
+        <textarea id="role" rows="2" maxlength="2000" placeholder="Paste a job title or description to check fit. For example: Backend engineer, Python, REST APIs, AWS"></textarea>
+      </div>
+
+      <div id="messages" class="messages" aria-live="polite">
+        <div id="empty" class="empty">
+          <p>Upload a resume to start. You can ask things like:</p>
+          <ul>
+            <li>Which programming languages does the candidate know?</li>
+            <li>Summarize the candidate's professional profile.</li>
+            <li>Is the candidate a good fit for the role above?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="suggest" class="suggest" aria-label="Suggested questions"></div>
+
+      <form id="composer" class="composer" autocomplete="off">
+        <label class="sr-only" for="question">Your question</label>
+        <textarea id="question" rows="1" maxlength="1000" placeholder="Ask about skills, experience or fit" disabled></textarea>
+        <button id="send" class="btn" type="submit" disabled>Ask</button>
+      </form>
+    </section>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
